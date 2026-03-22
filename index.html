@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>QuizMind AI</title>
+
+  <!--
+    FILE LINKS FROM index.html
+    ══════════════════════════════════════════════
+    ① style.css  ← loaded here via <link>
+    ② app.js     ← loaded at bottom via <script>
+    ③ server.py  ← serves this file at GET /
+    ══════════════════════════════════════════════
+  -->
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet"/>
+
+  <!-- ① Link to style.css — all visual styling lives there -->
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+
+<header>
+  <div class="logo">
+    <div class="logo-icon">⚡</div>
+    Quiz<span>Mind</span> AI
+  </div>
+  <div class="header-right">
+    <div class="status-dot"></div>
+    <div class="status-label">AI ONLINE</div>
+  </div>
+</header>
+
+<div class="app">
+
+  <!-- ── CHAT PANEL ────────────────────────────────────────── -->
+  <div class="chat-panel">
+    <div class="panel-title">AI Assistant</div>
+    <div class="chat-messages" id="chatMessages"></div>
+    <div class="chat-input-area">
+      <textarea
+        class="chat-input"
+        id="chatInput"
+        placeholder="Type your message..."
+        rows="1"
+        disabled
+      ></textarea>
+      <button class="send-btn" id="sendBtn" disabled onclick="sendMessage()">
+        <svg viewBox="0 0 24 24"><path d="M2 21l21-9L2 3v7l15 2-15 2z"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- ── QUIZ PANEL ────────────────────────────────────────── -->
+  <div class="quiz-panel">
+
+    <!-- State 1: Idle (waiting for interests) -->
+    <div class="quiz-idle" id="quizIdle">
+      <div class="idle-icon">🧠</div>
+      <div class="idle-title">Your Quiz Awaits</div>
+      <div class="idle-sub">Chat with the AI on the left to get started. Tell it what topics excite you!</div>
+      <div class="interest-tags" id="interestTags"></div>
+    </div>
+
+    <!-- State 2: Loading (quiz being generated) -->
+    <div class="quiz-loading hidden" id="quizLoading">
+      <div class="loader-ring"></div>
+      <div class="loader-text">GENERATING YOUR QUIZ...</div>
+    </div>
+
+    <!-- State 3: Active (quiz in progress) -->
+    <div class="quiz-active hidden" id="quizActive">
+      <div class="quiz-header">
+        <div class="quiz-meta">
+          <div class="quiz-topic" id="quizTopic"></div>
+          <div class="quiz-progress-label" id="progressLabel">Question 1 / 5</div>
+        </div>
+        <div class="score-display">
+          ⚡ <span class="score-num" id="scoreNum">0</span> pts
+        </div>
+      </div>
+      <div class="quiz-progress-bar">
+        <div class="quiz-progress-fill" id="progressFill" style="width:0%"></div>
+      </div>
+      <div class="quiz-body">
+        <div class="question-num"  id="questionNum">Q 01</div>
+        <div class="question-text" id="questionText"></div>
+        <div class="options-grid"  id="optionsGrid"></div>
+        <div class="feedback-bar"  id="feedbackBar"></div>
+        <button class="next-btn"   id="nextBtn" onclick="nextQuestion()">Next →</button>
+      </div>
+    </div>
+
+    <!-- State 4: Results -->
+    <div class="quiz-results hidden" id="quizResults">
+      <div class="result-score-circle" id="resultCircle">
+        <div class="result-score-inner">
+          <div class="result-score-num"   id="resultScore"></div>
+          <div class="result-score-total" id="resultTotal"></div>
+        </div>
+      </div>
+      <div class="result-title"    id="resultTitle"></div>
+      <div class="result-subtitle" id="resultSub"></div>
+      <div class="result-actions">
+        <button class="btn-primary" onclick="retryQuiz()">Retry Same Topics</button>
+        <button class="btn-ghost"   onclick="changeInterests()">Change Interests</button>
+      </div>
+    </div>
+
+  </div><!-- /quiz-panel -->
+</div><!-- /app -->
+
+<!-- ② Link to app.js — all chat logic, quiz logic, and API calls live there -->
+<script src="app.js"></script>
+</body>
+</html>
